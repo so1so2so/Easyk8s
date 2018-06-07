@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% block title %}
+    <title>layui图片管理模板 2.0</title>
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/static/css/public.css" media="all" />
+{% endblock %}
+{% block body %}
+<body class="childrenBody">
+<form class="layui-form">
+	<blockquote class="layui-elem-quote news_search">
+		<div class="layui-inline">
+			<input type="checkbox" name="selectAll" id="selectAll" lay-filter="selectAll" lay-skin="primary" title="全选">
+		</div>
+		<div class="layui-inline">
+			<a class="layui-btn layui-btn-sm layui-btn-danger batchDel">批量删除</a>
+		</div>
+		<div class="layui-inline">
+			<a class="layui-btn layui-btn-sm uploadNewImg">上传新图片</a>
+		</div>
+	</blockquote>
+	<ul class="layer-photos-demo" id="Images"></ul>
+</form>
+{% endblock %}
+{% block js %}
+
+<script type="text/javascript" src="/static/js/images.js"></script>
+{% endblock %}
