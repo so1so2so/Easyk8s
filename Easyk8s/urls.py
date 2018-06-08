@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^userinfo$', views.userinfo,name="userinfo"),
     url(r'^namespace_list', views.namespace_list,name="namespace_list"),
     url(r'^node_list', views.node_list,name="node_list"),
+    url(r'^pod_list', views.pod_list,name="pod_list"),
     url(r'^image_list$', views.image_list,name="image_list"),
     url(r'^user_list$', views.user_list,name="user_list"),
     url(r'^page404$', views.page404,name="page404"),

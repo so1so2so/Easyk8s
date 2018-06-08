@@ -13,6 +13,12 @@
 			"spread": false
 		},
 		{
+			"title": "pod管理",
+			"icon": "icon-text",
+			"href": "/pod_list",
+			"spread": false
+		},
+		{
 			"title": "图片管理",
 			"icon": "&#xe634;",
 			"href": "/image_list",
