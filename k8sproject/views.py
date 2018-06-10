@@ -32,23 +32,6 @@ def namespace_list(request):
     get_namespace = My_k8s_api('list_namespace')
     all_name_space_things = get_namespace.getall()
     all_api = models.All_api_for_k8s.objects.values("api_name")
-    for api_name in all_api:
-        api_names = api_name['api_name']
-        print(api_names)
-        if api_names!='list_endpoints_for_all_namespaces':
-            if api_names=="list_namespace":
-                try:
-                    get_all=My_k8s_api(api_names).getall()
-                except TypeError:
-                    get_all = My_k8s_api(api_names, namespace="default").getall()
-                # d = get_all.getall()
-                if get_all and len(get_all.items)>0:
-                    # print(get_all.getall())
-                    result = get_all.items[0]
-                    models.All_api_for_k8s.objects.filter(api_name=api_names).update(result_from_api_name=result)
-                else:
-                    print ("请检查api名称是否正常",)
-                # models_obj.(result_from_api_name=result)
 
     return render(request, 'page/resource/namespace_list.html', locals())
 

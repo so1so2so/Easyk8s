@@ -18,10 +18,15 @@ class MY_Menu(admin.ModelAdmin):
     list_filter = ('name',)
 
 
+class resultAdmin(admin.ModelAdmin):
+    list_display = ('api', 'namespace',)
+    list_filter = ('namespace',)
+
+
 admin.site.register(models.Menu, MY_Menu)
 admin.site.register(models.All_api_for_k8s, My_All_api_for_k8s)
 admin.site.register(models.Show_content)
 admin.site.register(models.Role)
 admin.site.register(models.UserProfile)
 admin.site.register(models.namespace)
-admin.site.register(models.result)
+admin.site.register(models.result, resultAdmin)
