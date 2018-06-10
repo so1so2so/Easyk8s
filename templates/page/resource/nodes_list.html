@@ -39,19 +39,39 @@
                                             class="layui-icon"></i></div>
                                 </div>
                             </th>
-                            <th data-field="newsId">
-                                <div class="layui-table-cell laytable-cell-1-newsId" align="center"><span>ID</span>
-                                </div>
-                            </th>
+{#                            <th data-field="newsId">#}
+{#                                <div class="layui-table-cell laytable-cell-1-newsId" align="center"><span>ID</span>#}
+{#                                </div>#}
+{#                            </th>#}
                             <th data-field="newsName">
-                                <div class="layui-table-cell laytable-cell-1-newsAuthor"><span>名称</span></div>
+                                <div class="layui-table-cell laytable-cell-1-deafult"><span>节点IP</span></div>
                             </th>
                             <th data-field="newsAuthor">
-                                <div class="layui-table-cell laytable-cell-1-newsAuthor" align="center"><span>状态</span>
+                                <div class="layui-table-cell laytable-cell-1-label" align="center"><span>标签</span>
                                 </div>
                             </th>
                             <th data-field="newsAuthor">
-                                <div class="layui-table-cell laytable-cell-1-newsAuthor" align="center"><span>创建时间</span>
+                                <div class="layui-table-cell laytable-cell-1-datetime" align="center"><span>创建时间</span>
+                                </div>
+                            </th>
+                            <th data-field="newsAuthor">
+                                <div class="layui-table-cell laytable-cell-1-deafult" align="center"><span>CPU目前已用</span>
+                                </div>
+                            </th>
+                            <th data-field="newsAuthor">
+                                <div class="layui-table-cell laytable-cell-1-deafult" align="center"><span>CPU最大值</span>
+                                </div>
+                            </th>
+                            <th data-field="newsAuthor">
+                                <div class="layui-table-cell laytable-cell-1-deafult" align="center"><span>内存目前已用</span>
+                                </div>
+                            </th>
+                            <th data-field="newsAuthor">
+                                <div class="layui-table-cell laytable-cell-1-deafult" align="center"><span>内存最大值</span>
+                                </div>
+                            </th>
+                            <th data-field="newsAuthor">
+                                <div class="layui-table-cell laytable-cell-1-deafult" align="center"><span>节点状态</span>
                                 </div>
                             </th>
                             <th data-field="8">
@@ -71,29 +91,39 @@
                             <td data-field="0">
                                 <div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input
                                         type="checkbox" name="layTableCheckbox" lay-skin="primary">
-                                    <div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i
-                                            class="layui-icon"></i></div>
+                                    <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
+                                        <i class="layui-icon"></i></div>
                                 </div>
                             </td>
-                            <td data-field="newsId" align="center">
-                                <div class="layui-table-cell laytable-cell-1-newsId">{{ i }}</div>
+                            <td data-field="newsName">
+                                <div class="layui-table-cell laytable-cell-1-deafult"><a href="{% url 'node_info' i.metadata.name  %}">{{ i.metadata.name }}</a></div>
                             </td>
                             <td data-field="newsName">
-                                <div class="layui-table-cell laytable-cell-1-newsName"><a>{{ i.metadata.name }}</a></div>
-                            </td>
-                            <td data-field="newsName">
-                                <div class="layui-table-cell laytable-cell-1-newsName"><a>
+                                <div class="layui-table-cell laytable-cell-1-newsName">
+                                    <a href="#">
                                     {% get_labels i.metadata as alltags  %}
                                     {% for k,v in alltags.items %}
                                         <span>{{ k }}>>>{{ v }}</span><br>
                                         {% endfor %}
                                 </a></div>
                             </td>
-                            <td data-field="newsAuthor" align="center">
-                                <div class="layui-table-cell laytable-cell-1-newsAuthor">{{ i.status.phase }}</div>
-                            </td>
                             <td data-field="newsStatus" align="center" data-content="0">
-                                <div class="layui-table-cell laytable-cell-1-newsName">{{  i.metadata.creation_timestamp }}</div>
+                                <div class="layui-table-cell laytable-cell-1-datetime">{% get_people_time  i.metadata.creation_timestamp %}</div>
+                            </td>
+                            <td data-field="newsAuthor" align="center">
+                                <div class="layui-table-cell laytable-cell-1-deafult">{{ i.status.allocatable.cpu }}</div>
+                            </td>
+                            <td data-field="newsAuthor" align="center">
+                                <div class="layui-table-cell laytable-cell-1-deafult">{{ i.status.capacity.cpu }}</div>
+                            </td>
+                            <td data-field="newsAuthor" align="center">
+                                <div class="layui-table-cell laytable-cell-1-deafult">{{ i.status.allocatable.memory }}</div>
+                            </td>
+                            <td data-field="newsAuthor" align="center">
+                                <div class="layui-table-cell laytable-cell-1-deafult">{{ i.status.capacity.memory }}</div>
+                            </td>
+                            <td data-field="newsAuthor" align="center">
+                                <div class="layui-table-cell laytable-cell-1-deafult">{{ i.metadata.annotations.memory }}</div>
                             </td>
                             <td data-field="8" align="center" data-content="">
                                 <div class="layui-table-cell laytable-cell-1-8"><a class="layui-btn layui-btn-xs"
@@ -106,68 +136,6 @@
                 {% endfor %}
                         </tbody>
                     </table>
-                </div>
-                <div class="layui-table-fixed layui-table-fixed-l">
-                    <div class="layui-table-header">
-                        <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
-                            <thead>
-                            <tr>
-                                <th data-field="0" data-unresize="true">
-                                    <div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input
-                                            type="checkbox" name="layTableCheckbox" lay-skin="primary"
-                                            lay-filter="layTableAllChoose">
-                                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i
-                                                class="layui-icon"></i></div>
-                                    </div>
-                                </th>
-                            </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <div class="layui-table-body" style="height: auto;">
-                        <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
-                            <tbody>
-                            <tr data-index="0" class="">
-                                <td data-field="0">
-                                    <div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input
-                                            type="checkbox" name="layTableCheckbox" lay-skin="primary">
-                                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i
-                                                class="layui-icon"></i></div>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="layui-table-fixed layui-table-fixed-r layui-hide" style="right: -1px;">
-                    <div class="layui-table-header">
-                        <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
-                            <thead>
-                            <tr>
-                                <th data-field="8">
-                                    <div class="layui-table-cell laytable-cell-1-8" align="center"><span>操作</span></div>
-                                </th>
-                            </tr>
-                            </thead>
-                        </table>
-                        <div class="layui-table-mend"></div>
-                    </div>
-                    <div class="layui-table-body" style="height: auto;">
-                        <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
-                            <tbody>
-                            <tr data-index="0" class="">
-                                <td data-field="8" align="center" data-content="">
-                                    <div class="layui-table-cell laytable-cell-1-8"><a class="layui-btn layui-btn-xs"
-                                                                                       lay-event="edit">编辑</a> <a
-                                            class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a> <a
-                                            class="layui-btn layui-btn-xs layui-btn-primary" lay-event="look">预览</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
 
@@ -200,16 +168,17 @@
                 height: 150px;
             }
 
-            .laytable-cell-1-newsAuthor {
-                width: 111px;
+            .laytable-cell-1-deafult {
+                width: 123px;
             }
 
-            .laytable-cell-1-newsStatus {
-                width: 111px;
+            .laytable-cell-1-label {
+                width: 350px;
+                {#height: 100px;#}
             }
 
-            .laytable-cell-1-newsLook {
-                width: 111px;
+            .laytable-cell-1-datetime {
+                width: 200px;
             }
 
             .laytable-cell-1-newsTop {
@@ -224,16 +193,6 @@
                 width: 170px;
             }</style>
         </div>
-        <!--审核状态-->
-        {#	<script type="text/html" id="newsStatus">#}
-        {#		{{#  if(d.newsStatus == "1"){ }}#}
-        {#		<span class="layui-red">等待审核</span>#}
-        {#		{{#  } else if(d.newsStatus == "0"){ }}#}
-        {#		<span class="layui-blue">已存草稿</span>#}
-        {#		{{#  } else { }}#}
-        {#			审核通过#}
-        {##}
-        {#	</script>#}
 
         <!--操作-->
         <script type="text/html" id="newsListBar">

@@ -1,0 +1,206 @@
+{% extends 'index.html' %}
+{% load get_tags %}
+{% block css %}
+    {#    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />#}
+    <link rel="stylesheet" href="/static/css/public.css" media="all"/>
+{% endblock %}
+{% block body %}
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">详情</div>
+                <div class="layui-card-body">
+                    {% for foo in all_pod_things.items %}
+                        {% if foo.metadata.name == pod_name %}
+                            <pre>
+      名称:{{ pod_name }}
+      命名空间:{{ foo.metadata.namespace }}
+      标签:  {% get_labels foo.metadata as alltags %}{% for k,v in alltags.items %}
+             {{ k }}:{{ v }}{% endfor %}
+      创建时间:{% get_people_time foo.metadata.creation_timestamp %}
+      状态:{{ foo.status.phase }}
+      网络:
+           内部IP:{{ foo.status.pod_ip }}
+           节点IP:<a style="background: #1E9FFF" href=" {% url "node_info" foo.status.host_ip  %}">{{ foo.status.host_ip }}</a>
+        </pre>
+                            </div>
+                            </div>
+                            </div>
+
+  <div class="layui-col-md6">
+  <div class="layui-card">
+  <div class="layui-card-header">容器信息</div>
+  <div class="layui-card-body">
+        <pre>
+            {% for image_name in foo.spec.containers  %}
+        <span style="font-weight:bold ">{{ image_name.name }}</span>
+        镜像:{{ image_name.image }}
+        环境变量:{% for env in image_name.env %}{{ env.name }}(<a  style="background: #1E9FFF"href="#">{{ env.value_from.secret_key_ref.name }}</a>){% endfor %}
+        命令:{% for command in  image_name.command%}{{ command }}{% endfor %}
+        参数:
+            {% endfor %}
+        </pre>
+
+                                </div>
+                            </div>
+                            </div>
+     <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">资源状态</div>
+                <div class="layui-card-body">
+                  <table class="layui-table">
+                        <colgroup>
+                          <col width="150">
+                          <col width="150">
+                          <col width="200">
+                          <col>
+                        </colgroup>
+                      <thead>
+      <tr>
+        <th>类型</th>
+        <th>状态</th>
+        <th>最近一次检测时间</th>
+        <th>最近一次更改</th>
+        <th>原因</th>
+        <th>消息</th>
+      </tr>
+    </thead>
+    <tbody>
+          {% for rs_status in  foo.status.conditions %}
+      <tr>
+        <td>{{ rs_status.type }}</td>
+        <td>{{ rs_status.status }}</td>
+        <td>{% get_people_time rs_status.last_probe_time %}</td>
+        <td>{% get_people_time rs_status.last_transition_time %}</td>
+          <td>{{ rs_status.reason }}</td>
+        <td>{{ rs_status.message }}</td>
+
+      </tr>
+          {% endfor %}
+    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+
+     <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">创建者</div>
+                <div class="layui-card-body">
+                  <table class="layui-table">
+                        <colgroup>
+                          <col width="250">
+                          <col width="250">
+                          <col width="200">
+                          <col>
+                        </colgroup>
+                      <thead>
+      <tr>
+        <th>创建者名称</th>
+        <th>类型</th>
+        <th>标签</th>
+        <th>容器组</th>
+        <th>创建时间</th>
+        <th>镜像版本</th>
+      </tr>
+    </thead>
+    <tbody>
+          {% for rs in  foo.metadata.owner_references %}
+      <tr>
+        <td>{{ rs.name }} </td>
+        <td>{{ rs.kind }} </td>
+          {% endfor %}
+        <td >{% for la,lb in foo.metadata.labels.items %}
+                {{ la }}:{{ lb }}<br>
+        {% endfor %}  </td>
+            <td></td>
+            <td>{% get_people_time foo.metadata.creation_timestamp  %}</td>
+            <td>{% for i in foo.spec.containers %}
+                {{ i.image }}
+            {% endfor %}
+            </td>
+{#        <td>{%  get_image_name image.names %} </td>#}
+{#        <td>{%  get_image_sha256 image.names %} </td>#}
+{#        <td>{{  image.size_bytes }} </td>#}
+{#        <td>{%  get_image_size_mb image.size_bytes %} </td>#}
+
+      </tr>
+    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+
+     <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">事件</div>
+                <div class="layui-card-body">
+                  <table class="layui-table">
+         <thead>
+      <tr>
+        <th>消息</th>
+        <th>来源</th>
+        <th>子对象</th>
+        <th>总数</th>
+        <th>最早出现于</th>
+        <th>最早出现于</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </tbody>
+                  </table>
+                </div>
+              </div>
+     </div>
+                                 <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">挂载</div>
+                <div class="layui-card-body">
+                  <table class="layui-table">
+         <thead>
+      <tr>
+        <th>原目录(volumeMounts)</th>
+        <th>目标目录</th>
+        <th>挂载名称</th>
+        <th>使用存储(volumes)</th>
+        <th>存储方式(persistent_volume_claim)</th>
+        <th>最早出现于</th>
+      </tr>
+    </thead>
+{#                          {{ name }}#}
+    <tbody>
+                      {% for name in foo.spec.containers %}
+{#                      {% for val in foo.spec.volumes %}#}
+{#                          {{ name }}#}
+                      {% for path in name.volume_mounts %}
+                            <tr>
+                                <th>{{ path.sub_path }}</th>
+                                <th>{{ path.mount_path }}</th>
+                                <th>{{ path.name }}</th>
+{#                                            {% endfor %}#}
+{##}
+{#                                <th>{{ val.name }}</th>#}
+{#                                <th>{{ val.persistent_volume_claim }}</th>#}
+                                    {% endfor %}
+                      {% endfor %}
+                                <th></th>
+                                <th></th>
+                              </tr>
+
+    </tbody>
+                  </table>
+                </div>
+              </div>
+     </div>
+                            </div>
+                         {% endif %}
+                    {% endfor %}
+{% endblock %}

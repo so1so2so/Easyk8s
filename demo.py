@@ -5,7 +5,7 @@ from kubernetes import client, config
 config.load_kube_config("config")
 v1 = client.CoreV1Api()
 # print("Listing pods with their IPs:")
-ret = v1.list_namespaced_pod(async=True, namespace="default")
+ret = v1.list_namespaced_endpoints(async=True,namespace='kube-system')
 # for i in ret.get():
 #     print i.status.pod_ip
 # print ret.get().items
@@ -30,7 +30,7 @@ class My_k8s_api():
 # names={"zhang":123}
 # d= My_k8s_api("obj",watch,**names)
 # print d.getall()
-d=My_k8s_api("obj",namespace="ingress-nginx")
-f = getattr(d,"getall")
-f=f(**d.kwargs)
-print f
+# d=My_k8s_api("obj",namespace="ingress-nginx")
+# f = getattr(d,"getall")
+# f=f(**d.kwargs)
+# print f

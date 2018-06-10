@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% block css %}
+    {% load get_tags %}
     {#    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />#}
     <link rel="stylesheet" href="/static/css/public.css" media="all"/>
 {% endblock %}
@@ -38,10 +39,10 @@
                                             class="layui-icon"></i></div>
                                 </div>
                             </th>
-                            <th data-field="newsId">
-                                <div class="layui-table-cell laytable-cell-1-newsId" align="center"><span>ID</span>
-                                </div>
-                            </th>
+{#                            <th data-field="newsId">#}
+{#                                <div class="layui-table-cell laytable-cell-1-newsId" align="center"><span>ID</span>#}
+{#                                </div>#}
+{#                            </th>#}
                             <th data-field="newsName">
                                 <div class="layui-table-cell laytable-cell-1-newsName"><span>名称</span></div>
                             </th>
@@ -74,9 +75,9 @@
                                             class="layui-icon"></i></div>
                                 </div>
                             </td>
-                            <td data-field="newsId" align="center">
-                                <div class="layui-table-cell laytable-cell-1-newsId">{{ i }}</div>
-                            </td>
+{#                            <td data-field="newsId" align="center">#}
+{#                                <div class="layui-table-cell laytable-cell-1-newsId">{{ i }}</div>#}
+{#                            </td>#}
                             <td data-field="newsName">
                                 <div class="layui-table-cell laytable-cell-1-newsName">{{ i.metadata.name }}</div>
                             </td>
@@ -84,7 +85,7 @@
                                 <div class="layui-table-cell laytable-cell-1-newsAuthor">{{ i.status.phase }}</div>
                             </td>
                             <td data-field="newsStatus" align="center" data-content="0">
-                                <div class="layui-table-cell laytable-cell-1-newsName">{{  i.metadata.creation_timestamp }}</div>
+                                <div class="layui-table-cell laytable-cell-1-newsName">{% get_people_time i.metadata.creation_timestamp %}</div>
                             </td>
                             <td data-field="8" align="center" data-content="">
                                 <div class="layui-table-cell laytable-cell-1-8"><a class="layui-btn layui-btn-xs"
