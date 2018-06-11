@@ -27,7 +27,11 @@ class My_k8s_api():
             return ret
         else:
             return None
+
+
 # k8s_obj = My_k8s_api("list_namespaced_pod")
 # name = k8s_obj.getall("default")
 # for i in name.items:
 #     print i.status.pod_ip,">>>>>>>>>",i.status.host_ip
+
+
