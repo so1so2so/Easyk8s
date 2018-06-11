@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% load get_tags %}
+{% block css %}
+    {#    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />#}
+    <link rel="stylesheet" href="/static/css/public.css" media="all"/>
+{% endblock %}
+{% block body %}
+<div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">详情</div>
+                <div class="layui-card-body">
+                    {% for i in get_all_config_map.items %}
+                        {% if i.metadata.name == map_name %}
+                        {% for k,message in i.data.items %}
+   <pre>
+
+       名称:{{ k }}
+       内容:   {{ message }}
+   </pre>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}

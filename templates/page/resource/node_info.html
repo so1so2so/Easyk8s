@@ -1,0 +1,133 @@
+{% extends 'index.html' %}
+{% load get_tags %}
+{% block css %}
+    {#    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />#}
+    <link rel="stylesheet" href="/static/css/public.css" media="all"/>
+{% endblock %}
+{% block body %}
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">详情</div>
+                <div class="layui-card-body">
+                    {% for foo in all_node_things.items %}
+                        {% if foo.metadata.name == node_ip %}
+                            <pre>
+      名称:{{ node_ip }}
+      标签:  {% get_labels foo.metadata as alltags %}{% for k,v in alltags.items %}
+                                {{ k }}>>>{{ v }}{% endfor %}
+      注释:
+          <span>{% for k,v in foo.metadata.annotations.items %}
+              {{ k }}:{{ v }}{% endfor %}</span>
+      创建时间:{% get_people_time foo.metadata.creation_timestamp %}
+      外部ID:{% for ip in foo.status.addresses %}
+                                {{ ip.type }}>>{{ ip.address }}{% endfor %}
+      调度情况:{% if  foo.spec.unschedulable %}<span>不正常</span>{% else %}<span>正常</span>{% endif %}
+        </pre>
+                            </div>
+                            </div>
+                            </div>
+
+
+                            <div class="layui-col-md6">
+                            <div class="layui-card">
+                            <div class="layui-card-header">系统信息</div>
+                            <div class="layui-card-body">
+        <pre>
+            机器 ID:{{ foo.status.node_info.machine_id }}
+            系统 UUID:{{ foo.status.node_info.system_uuid }}
+            启动 ID:{{ foo.status.node_info.boot_id }}
+            内核版本:{{ foo.status.node_info.kernel_version }}
+            操作系统镜像:{{ foo.status.node_info.os_image }}
+            容器运行时版本:{{ foo.status.node_info.container_runtime_version }}
+            Kubelet 版本:{{ foo.status.node_info.kubelet_version }}
+            Kube-Proxy 版本:{{ foo.status.node_info.kube_proxy_version }}
+            操作系统:{{ foo.status.node_info.operating_system }}
+            架构:{{ foo.status.node_info.architecture }}
+        </pre>
+
+                                </div>
+                            </div>
+                            </div>
+     <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">资源状态</div>
+                <div class="layui-card-body">
+                  <table class="layui-table">
+                        <colgroup>
+                          <col width="150">
+                          <col width="150">
+                          <col width="200">
+                          <col>
+                        </colgroup>
+                      <thead>
+      <tr>
+        <th>类型</th>
+        <th>状态</th>
+        <th>最近一次检测时间</th>
+        <th>最近一次更改</th>
+        <th>原因</th>
+        <th>消息</th>
+      </tr>
+    </thead>
+    <tbody>
+          {% for rs_status in  foo.status.conditions %}
+      <tr>
+        <td>{{ rs_status.type }}</td>
+        <td>{{ rs_status.status }}</td>
+        <td>{% get_people_time rs_status.last_heartbeat_time %} </td>
+        <td>{% get_people_time rs_status.last_transition_time %} </td>
+        <td>{{ rs_status.reason }}</td>
+        <td>{{ rs_status.message }}</td>
+
+      </tr>
+          {% endfor %}
+    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+
+{#        容器资源                    #}
+     <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">所有镜像</div>
+                <div class="layui-card-body">
+                  <table class="layui-table">
+                        <colgroup>
+                          <col width="150">
+                          <col width="150">
+                          <col width="200">
+                          <col>
+                        </colgroup>
+                      <thead>
+      <tr>
+        <th>容器仓库(来源)</th>
+        <th>容器名称</th>
+        <th>容器唯一ID(sha256)</th>
+{#        <th>容器版本</th>#}
+        <th>容器大小</th>
+      </tr>
+    </thead>
+    <tbody>
+          {% for image in  foo.status.images %}
+      <tr>
+        <td>{%  get_image_warehouse image.names %} </td>
+        <td>{%  get_image_name image.names %} </td>
+        <td>{%  get_image_sha256 image.names %} </td>
+{#        <td>{{  image.size_bytes }} </td>#}
+        <td>{%  get_image_size_mb image.size_bytes %} </td>
+
+      </tr>
+          {% endfor %}
+    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+
+
+
+                         {% endif %}
+                    {% endfor %}
+{% endblock %}
