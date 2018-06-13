@@ -12,7 +12,7 @@ class My_All_api_for_k8s(admin.ModelAdmin):
     list_filter = ('menu_name',)
     # filter_horizontal = ('menu_name',)
     search_fields = ("api_name",)
-
+    list_editable = ("menu_name",)
 
 class My_Menu(admin.ModelAdmin):
     list_display = ('name', 'url_type', 'url_name')

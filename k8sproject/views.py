@@ -1,11 +1,17 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# _*_ coding:utf-8 _*_
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse, redirect
 
 from k8sproject.k8sapi.allk8s import My_k8s_api
 from k8sproject import models
-import pickle
+import pickle, json, os
+from Easyk8s.settings import STATICFILES_DIRS
+
+
+# config_file = os.path.join(os.path.join(os.path.join(BASE_DIR, 'keys'), ), 'config')
+
 
 # Create your views here.
 def index(request):
@@ -124,8 +130,36 @@ def user_list(request):
     return render(request, 'page/user/userList.html')
 
 
+def create_menu(request):
+    menu = {}
+    menu["contentManagement"] = []
+    menu_all = models.Menu.objects.all()
+    for menus in menu_all:
+        menu_name = menus.name
+        center = {}
+        apiname = models.All_api_for_k8s.objects.filter(menu_name__name=menu_name)
+        for i in apiname:
+            if i.api_name.find("namespaced") == -1:
+                api___name = i.api_name
+            center["title"] = menu_name
+            center["icon"] = "icon-text"
+            center["href"] = "/k8s/show/%s" % api___name
+            center["spread"] = False
+        menu["contentManagement"].append(center)
+
+    key_path = os.path.join(os.path.join(STATICFILES_DIRS[0], "json"), "menu.json")
+    # print(key_path)
+    print menu.__len__()
+    with open(key_path, "w")as men:
+        men.write(json.dumps(menu))
+    # STATICFILES_DIRS
+    return HttpResponse(json.dumps(menu))
+
+
 def show_part(request, api_name):
-    all = models.result.objects.filter(api__api_name=api_name).values("result_from_api_name")
-    result=all[0]['result_from_api_name']
-    print(pickle.loads(result))
+    all = models.result.objects.filter(api__api_name=api_name)
+    for i in all:
+        result_pidkle = i.result_from_api_name
+        # result=all[0]['result_from_api_name']
+        result = pickle.loads(result_pidkle)
     return render(request, 'page/resource/show_part.html', locals())

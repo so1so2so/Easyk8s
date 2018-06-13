@@ -66,7 +66,7 @@
                 <div class="layui-table-body layui-table-main" style="height: 575px;">
                     <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
                         <tbody>
-                {% for i in all_name_space_things.items %}
+                {% for i in result %}
                         <tr data-index="0" class="">
                             <td data-field="0">
                                 <div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input
@@ -215,17 +215,6 @@
                 width: 170px;
             }</style>
         </div>
-        <!--审核状态-->
-        {#	<script type="text/html" id="newsStatus">#}
-        {#		{{#  if(d.newsStatus == "1"){ }}#}
-        {#		<span class="layui-red">等待审核</span>#}
-        {#		{{#  } else if(d.newsStatus == "0"){ }}#}
-        {#		<span class="layui-blue">已存草稿</span>#}
-        {#		{{#  } else { }}#}
-        {#			审核通过#}
-        {##}
-        {#	</script>#}
-
         <!--操作-->
         <script type="text/html" id="newsListBar">
             <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -236,5 +225,5 @@
     {#<script type="text/javascript" src="../../layui/layui.js"></script>#}
 {% endblock %}
 {% block js %}
-{#    <script type="text/javascript" src="/static/js/newsList.js"></script>#}
+    <script type="text/javascript" src="/static/js/newsList.js"></script>
 {% endblock %}
