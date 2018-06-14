@@ -37,5 +37,5 @@ urlpatterns = [
     url(r'^user_list$', views.user_list,name="user_list"),
     url(r'^page404$', views.page404,name="page404"),
     url(r'^create_menu', views.create_menu,name="create_menu"),
-    url(r'^getall_to_databases/$', getall_to_databases.get_all_to_databases,name="getall_to_databases"),
+    url(r'^getall_to_databases/$', getall_to_databases.getall_to_databases,name="getall_to_databases"),
 ]

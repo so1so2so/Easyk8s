@@ -6,7 +6,7 @@ from django.shortcuts import render, HttpResponse
 import pickle
 
 
-def get_all_to_databases(request):
+def getall_to_databases(request):
     all_api = models.All_api_for_k8s.objects.values("api_name")
     for api_name in all_api:
         api_names = api_name['api_name']
