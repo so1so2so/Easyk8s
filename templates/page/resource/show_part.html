@@ -82,7 +82,7 @@
                                 <div class="layui-table-cell laytable-cell-1-newsId">{{ forloop.counter }}</div>
                             </td>
                             <td data-field="newsName">
-                                <div class="layui-table-cell laytable-cell-1-newsName"><a href="#">{{ i.metadata.name }}</a></div>
+                                <div class="layui-table-cell laytable-cell-1-newsName"><a href=" {% url "node_info" i.metadata.name %}">{{ i.metadata.name }}</a></div>
                             </td>
                             <td data-field="newsName">
                                 <div class="layui-table-cell laytable-cell-1-biaoqian">
