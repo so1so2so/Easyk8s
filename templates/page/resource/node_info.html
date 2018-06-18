@@ -10,7 +10,7 @@
             <div class="layui-card">
                 <div class="layui-card-header">详情</div>
                 <div class="layui-card-body">
-                    {% for foo in all_node_things.items %}
+                    {% for foo in all_node_things %}
                         {% if foo.metadata.name == node_ip %}
                             <pre>
       名称:{{ node_ip }}

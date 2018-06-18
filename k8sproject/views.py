@@ -50,10 +50,15 @@ def node_list(request):
 
 
 def node_info(request, node_ip):
-    if request.method == "GET":
-        get_node = My_k8s_api('list_node')
-        # print(node_ip)
-        all_node_things = get_node.getall()
+    all = models.result.objects.filter(api__api_name='list_node')
+    for i in all:
+        result_pidkle = i.result_from_api_name
+        # result=all[0]['result_from_api_name']
+        all_node_things = pickle.loads(result_pidkle)
+    # if request.method == "GET":
+    #     get_node = My_k8s_api('list_node')
+    #     # print(node_ip)
+    #     all_node_things = get_node.getall()
     return render(request, 'page/resource/node_info.html', locals())
 
 

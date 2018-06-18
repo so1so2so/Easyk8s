@@ -16,7 +16,7 @@
                     <a class="layui-btn search_btn" data-type="reload">搜索</a>
                 </div>
                 <div class="layui-inline">
-                    <a class="layui-btn layui-btn-normal addNews_btn">添加namespace</a>
+                    <a class="layui-btn layui-btn-normal addNews_btn">添加</a>
                 </div>
                 <div class="layui-inline">
                     <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
@@ -39,12 +39,15 @@
                                             class="layui-icon"></i></div>
                                 </div>
                             </th>
-{#                            <th data-field="newsId">#}
-{#                                <div class="layui-table-cell laytable-cell-1-newsId" align="center"><span>ID</span>#}
-{#                                </div>#}
-{#                            </th>#}
+                            <th data-field="newsId">
+                                <div class="layui-table-cell laytable-cell-1-newsId" align="center"><span>ID</span>
+                                </div>
+                            </th>
                             <th data-field="newsName">
                                 <div class="layui-table-cell laytable-cell-1-newsName"><span>名称</span></div>
+                            </th>
+                            <th data-field="newsName">
+                                <div class="layui-table-cell laytable-cell-1-newsName"><span>标签</span></div>
                             </th>
                             <th data-field="newsAuthor">
                                 <div class="layui-table-cell laytable-cell-1-newsAuthor" align="center"><span>状态</span>
@@ -75,11 +78,20 @@
                                             class="layui-icon"></i></div>
                                 </div>
                             </td>
-{#                            <td data-field="newsId" align="center">#}
-{#                                <div class="layui-table-cell laytable-cell-1-newsId">{{ i }}</div>#}
-{#                            </td>#}
+                            <td data-field="newsId" align="center">
+                                <div class="layui-table-cell laytable-cell-1-newsId">{{ forloop.counter }}</div>
+                            </td>
                             <td data-field="newsName">
-                                <div class="layui-table-cell laytable-cell-1-newsName">{{ i.metadata.name }}</div>
+                                <div class="layui-table-cell laytable-cell-1-newsName"><a href="#">{{ i.metadata.name }}</a></div>
+                            </td>
+                            <td data-field="newsName">
+                                <div class="layui-table-cell laytable-cell-1-biaoqian">
+                                    <a href="#">
+                                    {% get_labels i.metadata as alltags  %}
+                                    {% for k,v in alltags.items %}
+                                        <span>{{ k }}>>>{{ v }}</span><br>
+                                        {% endfor %}
+                                </a></div>
                             </td>
                             <td data-field="newsAuthor" align="center">
                                 <div class="layui-table-cell laytable-cell-1-newsAuthor">{{ i.status.phase }}</div>
@@ -199,8 +211,9 @@
                 width: 111px;
             }
 
-            .laytable-cell-1-newsLook {
-                width: 111px;
+            .laytable-cell-1-biaoqian {
+                width: 350px;
+                height: 150px;
             }
 
             .laytable-cell-1-newsTop {
