@@ -9,21 +9,21 @@ from pprint import pprint
 
 config.load_kube_config("config")
 v1 = client.CoreV1Api()
-# print("Listing pods with their IPs:")
-# ret = v1.list_endpoints_for_all_namespaces(async=True)
-ret = v1.list_node(async=True)
+body = client.V1DeleteOptions()
+ret = v1.delete_namespaced_pod(name='nginx-ingress-controller-7494c4c66d-f4mc6',namespace='ingress-nginx',body=body)
+print(ret)
 # ret2 = v1.list_node(async=True)
 # for i in ret.get():
 #     print i.status.pod_ip
 # print ret.get().items
 # # print(ret)
 # print ret.get(), ret2.get()
-
-print(ret.get().items)
-with open("test.json", "w") as f:
-        # for i in ret.get().items:
-    f.writelines(str(ret.get().items))
+# print(ret.get().items)
+# with open("test.json", "w") as f:
+#     # for i in ret.get().items:
+#     f.writelines(str(ret.get().items))
     # f.writelines(str(ret.items))
+
 
 # api_response = api_instance.list_namespaced_endpoints(namespace, pretty=pretty, _continue=_continue, field_selector=field_selector, include_uninitialized=include_uninitialized, label_selector=label_selector, limit=limit, resource_version=resource_version, timeout_seconds=timeout_seconds, watch=watch)
 #     pprint(api_response)

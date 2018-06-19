@@ -4,7 +4,7 @@ from django import template
 from django.core.exceptions import FieldDoesNotExist
 from django.utils.safestring import mark_safe
 from django.utils.timezone import datetime, timedelta
-
+import re
 register = template.Library()
 
 
@@ -79,3 +79,6 @@ def get_image_size_mb(image_obj_size_bytes):
     number_of_bytes = round(number_of_bytes, precision)
 
     return str(number_of_bytes) + ' ' + unit
+@register.simple_tag
+def get_url_name(url_name):
+    re.match()

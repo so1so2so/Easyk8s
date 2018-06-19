@@ -104,7 +104,7 @@ def config_map(request):
     get_all_config_map = get_config_map.getall()
     get_namespace = My_k8s_api('list_namespace')
     all_name_space_things = get_namespace.getall()
-    return render(request, 'page/resource/config_map.html', locals())
+    return render(request, 'page/resource/config_map_info.html', locals())
 
 
 def config_map_info(request, map_name):
@@ -144,25 +144,35 @@ def create_menu(request):
         center = {}
         apiname = models.All_api_for_k8s.objects.filter(menu_name__name=menu_name)
         for i in apiname:
+            # api___name=None
+            children = False
             if i.api_name.find("namespaced") == -1:
                 api___name = i.api_name
-            center["title"] = menu_name
-            center["icon"] = "icon-text"
-            center["href"] = "/k8s/show/%s" % api___name
-            center["spread"] = False
+                center["title"] = menu_name
+                center["icon"] = "icon-text"
+                center["href"] = "/k8s/show/%s" % api___name
+                center["spread"] = False
         menu["contentManagement"].append(center)
 
     key_path = os.path.join(os.path.join(STATICFILES_DIRS[0], "json"), "menu.json")
     # print(key_path)
-    print menu.__len__()
-    with open(key_path, "w")as men:
+    import codecs
+    # print menu.__len__()
+    with codecs.open(key_path, "w", 'utf8')as men:
         men.write(json.dumps(menu))
     # STATICFILES_DIRS
     return HttpResponse(json.dumps(menu))
 
 
 def show_part(request, api_name):
+    all_namespace=models.namespace.objects.all()
+    namespace = request.GET.get("namespace", None)
     all = models.result.objects.filter(api__api_name=api_name)
+    if namespace:
+        name_api = api_name.split("_")[1]
+        start_str = 'list_namespaced_'
+        new_api_name = ''.join([start_str, name_api])
+        all = models.result.objects.filter(api__api_name=new_api_name).filter(namespace__namespace_name=namespace)
     for i in all:
         result_pidkle = i.result_from_api_name
         # result=all[0]['result_from_api_name']

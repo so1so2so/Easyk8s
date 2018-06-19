@@ -16,10 +16,12 @@ class My_k8s_api():
         self._k8s_obj = k8s_obj
         self.args = args
         self.kwargs = kwargs
+        self.body = client.V1DeleteOptions()
 
     def getall(self, *args, **kwargs):
         config.load_kube_config(config_file)
         v1 = client.CoreV1Api()
+        body = client.V1DeleteOptions()
         if hasattr(v1, self._k8s_obj):
             k8s_instance_obj = getattr(v1, self._k8s_obj)
             ret = k8s_instance_obj(**self.kwargs)
@@ -28,10 +30,7 @@ class My_k8s_api():
         else:
             return None
 
-
 # k8s_obj = My_k8s_api("list_namespaced_pod")
 # name = k8s_obj.getall("default")
 # for i in name.items:
 #     print i.status.pod_ip,">>>>>>>>>",i.status.host_ip
-
-
