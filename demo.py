@@ -9,8 +9,10 @@ from pprint import pprint
 
 config.load_kube_config("config")
 v1 = client.CoreV1Api()
+v2 = client.ExtensionsV1beta1Api()
 body = client.V1DeleteOptions()
 ret = v1.delete_namespaced_pod(name='nginx-ingress-controller-7494c4c66d-f4mc6',namespace='ingress-nginx',body=body)
+v2.create_namespaced_deployment()
 print(ret)
 # ret2 = v1.list_node(async=True)
 # for i in ret.get():
